@@ -1243,25 +1243,26 @@ impl Config {
     }
 
     pub fn get_option(k: &str) -> String {
-        if k == "custom-rendezvous-server" {
-            return "18.181.251.3".to_string();
-        }
-        if k == "api-server" {
-            return "http://18.181.251.3:3000".to_string();
-        }
-        if k == "key" {
-            return "VPGCeFLikHwTvcyNXs149F8yp9ciz4EE9cAVBx4atrw=".to_string();
-        }
-        if k == "verification-method" {
-            return "use-temporary-password".to_string();
-        }
-        get_or(
+        let mut v = get_or(
             &OVERWRITE_SETTINGS,
             &CONFIG2.read().unwrap().options,
             &DEFAULT_SETTINGS,
             k,
         )
-        .unwrap_or_default()
+        .unwrap_or_default();
+
+        if v.is_empty() {
+            if k == "custom-rendezvous-server" {
+                v = "18.181.251.3".to_string();
+            } else if k == "api-server" {
+                v = "http://18.181.251.3:3000".to_string();
+            } else if k == "key" {
+                v = "VPGCeFLikHwTvcyNXs149F8yp9ciz4EE9cAVBx4atrw=".to_string();
+            } else if k == "verification-method" {
+                v = "use-temporary-password".to_string();
+            }
+        }
+        v
     }
 
     pub fn get_bool_option(k: &str) -> bool {
