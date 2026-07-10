@@ -1244,13 +1244,13 @@ impl Config {
 
     pub fn get_option(k: &str) -> String {
         if k == "custom-rendezvous-server" {
-            return "api.yourdomain.com".to_string();
+            return "18.181.251.3".to_string();
         }
         if k == "api-server" {
-            return "http://api.yourdomain.com".to_string();
+            return "http://18.181.251.3:3000".to_string();
         }
         if k == "key" {
-            return "YOUR_PUBLIC_KEY_HERE".to_string();
+            return "VPGCeFLikHwTvcyNXs149F8yp9ciz4EE9cAVBx4atrw=".to_string();
         }
         if k == "verification-method" {
             return "use-temporary-password".to_string();
