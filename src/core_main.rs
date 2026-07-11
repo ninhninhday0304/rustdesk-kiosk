@@ -741,6 +741,12 @@ pub fn core_main() -> Option<Vec<String>> {
             }
             return None;
         } else {
+            if args[0] == "multi_window" {
+                #[cfg(feature = "flutter")]
+                return Some(flutter_args);
+                #[cfg(not(feature = "flutter"))]
+                return Some(args);
+            }
             #[cfg(all(feature = "flutter", feature = "plugin_framework"))]
             #[cfg(not(any(target_os = "android", target_os = "ios")))]
             if args[0] == "--plugin-install" {

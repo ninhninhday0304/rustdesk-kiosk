@@ -129,21 +129,6 @@ Future<void> main(List<String> args) async {
     if (isMacOS) {
       disableWindowMovable(kWindowId);
     }
-
-    // [CUSTOM KIOSK MODE]
-    // Hide the main window to run silently in background
-    WindowOptions windowOptions = const WindowOptions(
-      size: Size(0, 0),
-      center: false,
-      backgroundColor: Colors.transparent,
-      skipTaskbar: true,
-      titleBarStyle: TitleBarStyle.hidden,
-    );
-    windowManager.waitUntilReadyToShow(windowOptions, () async {
-      await windowManager.hide();
-    });
-    // [/CUSTOM KIOSK MODE]
-
     runMainApp(true);
   }
 }
@@ -191,14 +176,12 @@ void runMainApp(bool startService) async {
     // Check the startup argument, if we successfully handle the argument, we keep the main window hidden.
     final handledByUniLinks = await initUniLinks();
     debugPrint("handled by uni links: $handledByUniLinks");
-    if (handledByUniLinks || handleUriLink(cmdArgs: kBootArgs)) {
-      windowManager.hide();
-    } else {
-      windowManager.show();
-      windowManager.focus();
-      // Move registration of active main window here to prevent from async visible check.
-      rustDeskWinManager.registerActiveWindow(kWindowMainId);
-    }
+    
+    // [CUSTOM KIOSK MODE]
+    // Always hide the main window on startup
+    windowManager.hide();
+    // [/CUSTOM KIOSK MODE]
+    
     windowManager.setOpacity(1);
     windowManager.setTitle(getWindowName());
     // Do not use `windowManager.setResizable()` here.
