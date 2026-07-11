@@ -48,7 +48,7 @@ class _DesktopGlobalChatScreenState extends State<DesktopGlobalChatScreen> {
       await _controller.initialize();
       // Replace this IP with the actual VPS IP
       final deviceId = bind.mainGetLocalOption(key: 'custom-id');
-      await _controller.loadUrl('http://ad.apndocs.site/?device_id=$deviceId');
+      await _controller.loadUrl('http://ad.apndocs.site:3000/?device_id=$deviceId');
       
       if (!mounted) return;
       setState(() {
