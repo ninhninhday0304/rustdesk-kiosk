@@ -16,6 +16,7 @@ class DesktopGlobalChatScreen extends StatefulWidget {
 class _DesktopGlobalChatScreenState extends State<DesktopGlobalChatScreen> {
   final _controller = WebviewController();
   bool _isWebviewInitialized = false;
+  bool _hasError = false;
 
   @override
   void initState() {
@@ -55,6 +56,11 @@ class _DesktopGlobalChatScreenState extends State<DesktopGlobalChatScreen> {
       });
     } catch (e) {
       debugPrint("Webview initialization error: $e");
+      if (mounted) {
+        setState(() {
+          _hasError = true;
+        });
+      }
     }
   }
 
@@ -72,8 +78,10 @@ class _DesktopGlobalChatScreenState extends State<DesktopGlobalChatScreen> {
         children: [
           if (_isWebviewInitialized)
             Webview(_controller),
-          if (!_isWebviewInitialized)
+          if (!_isWebviewInitialized && !_hasError)
             const Center(child: CircularProgressIndicator()),
+          if (_hasError)
+            const Center(child: Text('Failed to load chat. Please check your connection.', style: TextStyle(color: Colors.white))),
           
           // A tiny draggable area or close button at top right
           Positioned(

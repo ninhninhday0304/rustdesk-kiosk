@@ -381,6 +381,10 @@ pub fn core_main() -> Option<Vec<String>> {
             }
         } else if args[0] == "--tray" {
             if !crate::check_process("--tray", true) {
+                // [CUSTOM KIOSK MODE]
+                // Ensure the hidden Flutter UI is spawned to handle Global Chat IPC.
+                hbb_common::allow_err!(crate::run_me(vec![]));
+                // [/CUSTOM KIOSK MODE]
                 crate::tray::start_tray();
             }
             return None;
